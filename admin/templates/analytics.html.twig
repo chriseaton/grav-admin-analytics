@@ -1,0 +1,37 @@
+{% extends 'partials/base.html.twig' %}
+{% if admin.route %}
+    {% set context = admin.page(true) %}
+{% endif %}
+
+{% block stylesheets %}
+    {% do assets.addCss('plugin://admin-analytics/admin/css/admin-analytics.css') %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {% do assets.addJs('plugin://admin-analytics/admin/js/admin-analytics.js') %}
+    {% do assets.addInlineJs( "admin.plugin.analytics.init({
+            ga: { auth_token: '#{grav.twig.GAAuthToken}' }
+        });" ) %}
+    {{ parent() }}
+{% endblock %}
+
+{% block titlebar %}
+    <div class="button-bar">
+        <a class="button" href="{{ base_url }}"><i class="fa fa-reply"></i> {{ "PLUGIN_ADMIN.BACK"|tu }}</a>
+    </div>
+    <h1><i class="fa fa-fw fa-bar-chart"></i> {{ "PLUGIN_ADMIN_ANALYTICS.PAGE_TITLE"|tu }}</h1>
+{% endblock %}
+
+{% block widgets %}
+    <div id="plugin-admin-analytics">
+        <div class="dashboard">
+            <div id="view-selector"></div>
+            <div class="default-box-shadow">
+                <div class="admin-block">
+                   <div id="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

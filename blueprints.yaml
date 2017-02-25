@@ -1,0 +1,54 @@
+name: Admin Analytics
+version: 0.0.1
+description: Adds an analytics section to Grav's admin plugin.
+icon: bar-chart
+author:
+    name: Christopher Eaton
+    email: chriseaton@live.com
+    url: https://gitlab.com/chriseaton
+homepage: https://gitlab.com/chriseaton/grav-plugin-admin-analytics
+keywords: admin, plugin, analytics, manager
+bugs: https://gitlab.com/chriseaton/grav-plugin-admin-analytics/issues
+
+dependencies:
+    - admin
+
+form:
+    validation: loose
+    fields:
+        tabs:
+            type: tabs
+            active: 1
+
+            fields:
+                tab_plugin:
+                    type: tab
+                    title: Plugin
+                    fields:
+                        enabled:
+                            type: toggle
+                            label: PLUGIN_ADMIN.PLUGIN_STATUS
+                            highlight: 1
+                            default: 0
+                            options:
+                                1: PLUGIN_ADMIN.ENABLED
+                                0: PLUGIN_ADMIN.DISABLED
+                            validate:
+                                type: bool
+                tab_ga:
+                    type: tab
+                    title: Google Analytics
+                    fields:
+                        ga.key_file:
+                            type: file
+                            label: Service Account Key (JSON)
+                            destination: 'user/data/plugins/admin-analytics'
+                            multiple: false
+                            filesize: 1
+                            accept:
+                                - application/json
+                                - application/x-javascript
+                                - text/javascript
+                                - text/x-javascript
+                                - text/x-json
+                                - .json
