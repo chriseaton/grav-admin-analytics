@@ -10,6 +10,42 @@
     line-height: 30px;
 }
 
+#plugin-admin-analytics .analytics-panel {
+    margin-bottom: 1%;
+}
+
+#plugin-admin-analytics .analytics-panel.size-full {
+    width: 100%;
+    clear: both;
+}
+
+#plugin-admin-analytics .analytics-panel.size-half {
+    width: 49.5%;
+    margin-right: 0.5%;
+    float: left;
+}
+
+#plugin-admin-analytics .analytics-panel.size-half.size-index-1 {
+    margin-left: 0.5%;
+    margin-right: 0;
+}
+
+#plugin-admin-analytics .analytics-panel.size-third {
+    width: 32.5%;
+    margin-right: 0.5%;
+    float: left;
+}
+
+#plugin-admin-analytics .analytics-panel.size-third.size-index-1 {
+    width: 33%;
+    margin-left: 0.5%;
+}
+
+#plugin-admin-analytics .analytics-panel.size-third.size-index-2 {
+    margin-left: 0.5%;
+    margin-right: 0;
+}
+
 #plugin-admin-analytics .analytics-panel .admin-block {
     padding-top: 0;
     padding-bottom: 0;

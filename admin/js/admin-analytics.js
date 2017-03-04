@@ -10,10 +10,13 @@ admin.plugin = admin.plugin || {};
  * The Grav Admin Analytics namespace.
  * @namespace admin.plugin.analytics
  * @prop {Boolean} domReady - indicates the DOM has been loaded.
+ * @prop {Array} panels - representation of panels containing one or more charts and/or metrics.
  */
 admin.plugin.analytics = {
 
     domReady: false,
+
+    panels: [],
 
     /**
      * Loads the plugin.
@@ -33,6 +36,33 @@ admin.plugin.analytics = {
     ready: function() {
         this.domReady = true;
         this.ga.ready();
+    },
+
+    /**
+     * Creates an HTML panel element in the dashboard area.
+     **/
+    createPanel: function(title, size, sizeIndex, bgColor) {
+        var index = this.panels.length;
+        if (!size || !size.match(/^(full|half|third)$/i)) {
+            size = 'full';
+        }
+        var id = 'panel-' + size + '-' + index;
+        if (!bgColor) {
+            bgColor = 'auto';
+        }
+        var html = '<div class="default-box-shadow analytics-panel size-' + size + ' size-index-' + sizeIndex +'">\n' +
+                   '  <div class="admin-block" style="background-color: ' + bgColor + ';">\n' +
+                   '    <div id="' + id + '" data-analytics-panel-index="' + index + '"></div>\n' +
+                   '  </div>\n' +
+                   '</div>';
+        return {
+            id: id,
+            html: html
+        };
+    },
+
+    appendPanel: function(panel) {
+        document.getElementById('panel-collection').innerHTML += panel.html;
     },
 
     /**
@@ -79,7 +109,6 @@ admin.plugin.analytics = {
      * @prop {admin.plugin.analytics} plugin - the parent plugin namespace object (admin.plugin.analytics).
      * @prop {Object} config - the configuration for Google Analytics.
      * @prop {Object} gapi - the google api object.
-     * @prop {Array} panels - representation of panels containing one or more charts and/or metrics.
      **/
     ga: {
 
@@ -88,8 +117,6 @@ admin.plugin.analytics = {
         config: null,
 
         gapi: null,
-
-        panels: [],
 
         /**
          * Loads the GA functionality.
@@ -156,8 +183,10 @@ admin.plugin.analytics = {
         changeView: function(viewIDs) {
             viewIDs = admin.plugin.analytics.utils.asArray(viewIDs);
             //update all charts with a new ID
-            for (var x = 0, xlen = this.panels.length; x < xlen; x++) {
-                this.panels[x].set({ query: { ids: viewIDs } }).execute();
+            for (var x = 0, xlen = this.plugin.panels.length; x < xlen; x++) {
+                if (this.plugin.panels[x].provider === 'ga') {
+                    this.plugin.panels[x].chart.set({ query: { ids: viewIDs } }).execute();
+                }
             }
         },
 
@@ -194,26 +223,38 @@ admin.plugin.analytics = {
          **/
         _buildPanels: function() {
             if (this.config.charts) {
+                var lastSize = '';
+                var lastSizeCount = 0;
                 for (var x = 0, xlen = this.config.charts.length; x < xlen; x++) {
-                    var pluginChartConfig = this.config.charts[x];
+                    var pcc = this.config.charts[x];
+                     //save the last size so an indexing class can be applied to the panel
+                    if (lastSize !== pcc.panel_size) {
+                        lastSize = pcc.panel_size;
+                        lastSizeCount = 0;
+                    }
+                    //build the panel
+                    var panel = this.plugin.createPanel(pcc.panel_title, pcc.panel_size, lastSizeCount, pcc.panel_color);
+                    this.plugin.appendPanel(panel);
+                    //inc. lastSizeCount so next loop it is incremented (if applicable).
+                    lastSizeCount++;
                     //clean up plugin chart config.
-                    pluginChartConfig.metrics = this.plugin.utils.asArray(pluginChartConfig.metrics);
-                    pluginChartConfig.dimensions = this.plugin.utils.asArray(pluginChartConfig.dimensions);
-                    this.plugin.utils.prefix(pluginChartConfig.metrics, 'ga:');
-                    this.plugin.utils.prefix(pluginChartConfig.dimensions, 'ga:');
+                    pcc.metrics = this.plugin.utils.asArray(pcc.metrics);
+                    pcc.dimensions = this.plugin.utils.asArray(pcc.dimensions);
+                    this.plugin.utils.prefix(pcc.metrics, 'ga:');
+                    this.plugin.utils.prefix(pcc.dimensions, 'ga:');
                     //create the ga chart config
                     var gaChartConfig = {
                         query: {
-                            metrics: pluginChartConfig.metrics.join(','),
-                            dimensions: pluginChartConfig.dimensions.join(','),
+                            metrics: pcc.metrics.join(','),
+                            dimensions: pcc.dimensions.join(','),
                             'start-date': '30daysAgo',
                             'end-date': 'yesterday'
                         },
                         chart: {
-                            container: 'chart-primary',
-                            type: pluginChartConfig.type.toUpperCase(),
+                            container: panel.id,
+                            type: pcc.type.toUpperCase(),
                             options: {
-                                title: pluginChartConfig.title,
+                                title: pcc.title,
                                 backgroundColor:{
                                     'fill': '#FFFFFF',
                                     'fillOpacity': 0
@@ -222,7 +263,10 @@ admin.plugin.analytics = {
                             }
                         }
                     };
-                    this.panels.push(new this.gapi.analytics.googleCharts.DataChart(gaChartConfig));
+                    this.plugin.panels.push({
+                            provider: 'ga',
+                            chart: new this.gapi.analytics.googleCharts.DataChart(gaChartConfig)
+                        });
                 }
             }
         }

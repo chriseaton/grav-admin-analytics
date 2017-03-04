@@ -48,10 +48,11 @@ form:
                                             markdown: true
                                             content: |
                                                         ## Instructions
-                                                        This utilizes Google's service account authentication. You will need to create and download a
-                                                        service account JSON file as described here.
+                                                        This plugin utilizes Google's service account authentication so your users aren't required to link their personal Google accounts.
+                                                        You will need to create and download a service account JSON file. Please see our instructions [here](#TODO) for more information.
 
                                                         ###### Resources
+                                                        - Create a Google API Service Account: [see here](https://console.developers.google.com/flows/enableapi?apiid=analytics&credential=client_key&pli=1)
                                                         - Metrics & Dimensions: [see here](https://developers.google.com/analytics/devguides/reporting/core/dimsmets).
                                                         - Google Analytics Query Explorer: [see here](https://ga-dev-tools.appspot.com/query-explorer/).
                                 column2:
@@ -94,12 +95,16 @@ form:
                             label:
                             btnLabel: Add Chart
                             fields:
-                                .title:
+                                .panel_title:
                                     type: text
-                                    label: Title
-                                .display:
+                                    label: Panel Title
+                                .panel_color:
+                                    type: colorpicker
+                                    label: Panel Color
+                                    default: "#eeeeee"
+                                .panel_size:
                                     type: select
-                                    label: Display
+                                    label: Panel Size
                                     size: small
                                     options:
                                         full: Full-Width
