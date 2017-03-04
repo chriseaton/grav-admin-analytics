@@ -10,7 +10,7 @@ Add an Analytics dashboard to your Grav CMS administration dashboard. Currently 
 
 ##### Roadmap
 * Code refinement and ensuring stability.
-* Allow user-base Oauth Google Authentication.
+* Allow user-based Oauth Google Authentication.
 * Add support for [OpenWebAnalytics](http://www.openwebanalytics.com/).
 
 #### Support

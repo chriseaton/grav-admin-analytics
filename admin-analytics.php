@@ -12,66 +12,62 @@ use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\Session\Session;
 use Symfony\Component\Yaml\Yaml as YamlParser;
 use Grav\Plugin\AdminAnalytics\GA;
-use Google\Auth\Credentials\ServiceAccountCredentials;
 
-class AdminAnalyticsPlugin extends Plugin
-{
+class AdminAnalyticsPlugin extends Plugin {
+
     protected $route = 'analytics';
+
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
-    {
+    public static function getSubscribedEvents() {
         return [
             'onPluginsInitialized' => ['onPluginsInitialized', 0],
         ];
     }
 
     /**
-     * Enable only if url matches to the configuration.
+     * Enable only if url matches the analytics route.
      */
-    public function onPluginsInitialized()
-    {
-        if (!$this->isAdmin()) {
+    public function onPluginsInitialized() {
+        if ($this->isAdmin() == false) {
             return;
         }
-        require_once __DIR__ . '/vendor/autoload.php';
-        require_once(__DIR__ . '/classes/ga.php');
-        /** @var Uri $uri */
-        $uri = $this->grav['uri'];
         $this->enable([
             'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
+            'onPageInitialized' => ['onPageInitialized', 0],
             'onAdminMenu' => ['onAdminMenu', 0],
         ]);
-        $jsonFile = $this->config->get('plugins.admin-analytics.ga.key_file');
-        if ($jsonFile != null && count($jsonFile) > 0) {
-            $jsonFilePath = array_values($jsonFile)[0]['path'];
-            //$test = new GA($jsonFilePath);
-            $sac = new ServiceAccountCredentials(['https://www.googleapis.com/auth/analytics.readonly'], $jsonFilePath);
-            $token = $sac->fetchAuthToken();
-            //set variables for twig
-            $uri = $this->grav['uri'];
-            $twig = $this->grav['twig'];
-            $twig->GAAuthToken = $token['access_token'];
-            //error_log(print_r($twig->GAAuthToken, true));
-        } else {
-            error_log(print_r('No JSON key file configured.', true));
-        }
     }
 
-    /**
-     * Add plugin templates path
-     */
-    public function onTwigTemplatePaths()
-    {
+    // Ensure the plugin templates path is available to twig.
+    public function onTwigTemplatePaths() {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
     }
 
-    /**
-     * Add navigation item to the admin plugin
-     */
-    public function onAdminMenu()
-    {
+    // Load the analytics systems and handle pre-authentication.
+    // Fires when the page is initialized.
+    public function onPageInitialized() {
+        $uri = $this->grav['uri'];
+        if ($this->route && '/admin/' . $this->route == $uri->path()) {
+            require_once(__DIR__ . '/vendor/autoload.php');
+            require_once(__DIR__ . '/classes/ga.php');
+            $jsonFile = $this->config->get('plugins.admin-analytics.ga.key_file');
+            if ($jsonFile != null && count($jsonFile) > 0) {
+                //set variables for twig
+                $uri = $this->grav['uri'];
+                $twig = $this->grav['twig'];
+                $ga = new GA(array_values($jsonFile)[0]['path']);
+                $twig->GAAuthToken = $ga->getAuthToken();
+            } else {
+                error_log(print_r('No GA service account JSON key file uploaded. Cannot load GA dashboard.', true));
+            }
+        }
+    }
+
+    // Add navigation link to the admin plugin sidebar.
+    public function onAdminMenu() {
         $this->grav['twig']->plugins_hooked_nav['PLUGIN_ADMIN_ANALYTICS.MENU_TEXT'] = ['route' => $this->route, 'icon' => 'fa-bar-chart'];
     }
+
 }
