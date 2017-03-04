@@ -120,7 +120,7 @@ admin.plugin.analytics = {
                     'end-date': 'yesterday'
                 },
                 chart: {
-                    container: 'chart',
+                    container: 'chart-primary',
                     type: 'LINE',
                     options: {
                         width: '100%'

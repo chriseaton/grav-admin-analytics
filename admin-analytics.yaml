@@ -1,1 +1,5 @@
 enabled: false
+ga:
+    view_switcher:
+        enabled: true
+        color: '#476472'

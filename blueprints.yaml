@@ -19,7 +19,6 @@ form:
         tabs:
             type: tabs
             active: 1
-
             fields:
                 tab_plugin:
                     type: tab
@@ -39,16 +38,389 @@ form:
                     type: tab
                     title: Google Analytics
                     fields:
-                        ga.key_file:
-                            type: file
-                            label: Service Account Key (JSON)
-                            destination: 'user/data/plugins/admin-analytics'
-                            multiple: false
-                            filesize: 1
-                            accept:
-                                - application/json
-                                - application/x-javascript
-                                - text/javascript
-                                - text/x-javascript
-                                - text/x-json
-                                - .json
+                        columns:
+                            type: columns
+                            fields:
+                                column1:
+                                    type: column
+                                    fields:
+                                        instructions:
+                                            type: display
+                                            markdown: true
+                                            content: |
+                                                        ## Instructions
+                                                        This utilizes Google's service account authentication. You will need to create and download a
+                                                        service account JSON file as described here.
+
+                                                        ###### Resources
+                                                        - Metrics & Dimensions: [see here](https://developers.google.com/analytics/devguides/reporting/core/dimsmets).
+                                                        - Google Analytics Query Explorer: [see here](https://ga-dev-tools.appspot.com/query-explorer/).
+                                column2:
+                                    type: column
+                                    fields:
+                                        ga.key_file:
+                                            type: file
+                                            label: Service Account Key (JSON)
+                                            destination: 'user/data/plugins/admin-analytics'
+                                            multiple: false
+                                            filesize: 1
+                                            accept:
+                                                - application/json
+                                                - application/x-javascript
+                                                - text/javascript
+                                                - text/x-javascript
+                                                - text/x-json
+                                                - .json
+                                        ga.view_switcher.enabled:
+                                            type: toggle
+                                            label: View Switcher
+                                            highlight: 1
+                                            default: 0
+                                            options:
+                                                1: PLUGIN_ADMIN.ENABLED
+                                                0: PLUGIN_ADMIN.DISABLED
+                                            validate:
+                                                type: bool
+                                        ga.view_switcher.color:
+                                            type: colorpicker
+                                            label: View Switcher Background Color
+                        ga.chart_title:
+                            type: display
+                            label: Charts
+                            markdown: true
+                            content: "*************"
+                        ga.charts:
+                            type: list
+                            style: vertical
+                            label:
+                            btnLabel: Add Chart
+                            fields:
+                                .title:
+                                    type: text
+                                    label: Title
+                                    placeholder: My Site Analytics Chart
+                                .display:
+                                    type: select
+                                    label: Display
+                                    size: small
+                                    options:
+                                        full: Full-Width
+                                        half: Half-Width
+                                        third: Third-Width
+                                .type:
+                                    type: select
+                                    label: Chart Type
+                                    size: small
+                                    options:
+                                        line: Line
+                                        column: Column
+                                        bar: Bar
+                                        table: Table
+                                        geo: Geographic
+                                .metrics:
+                                    type: select
+                                    label: Metric(s)
+                                    help: See the Metrics & Dimensions link in the instructions above for more detailed information.
+                                    multiple: true
+                                    options:
+                                        #user
+                                        users: "User: Users"
+                                        newUsers: "User: New Users"
+                                        percentNewSessions: "User: % New Sessions"
+                                        1dayUsers: "User: 1-Day Users"
+                                        7dayUsers: "User: 7-Day Users"
+                                        14dayUsers: "User: 14-Day Users"
+                                        30dayUsers: "User: 30-Day Users"
+                                        sessionsPerUser: "User: Sessions per User"
+                                        #session
+                                        sessions: "Session: # of Sessions"
+                                        bounces: "Session: Bounces"
+                                        bounceRate: "Session: Bounce Rate"
+                                        sessionDuration: "Session: Session Duration"
+                                        avgSessionDuration: "Session: Avg. Session Duration"
+                                        uniqueDimensionCombinations: "Session: Unique Dimension Combo."
+                                        hits: "Session: Hits"
+                                        #traffic sources
+                                        organicSearches: "Traffic Sources: Organic Searches"
+                                        #adwords
+                                        impressions: "AdWords: Impressions"
+                                        adClicks: "AdWords: Ad Clicks"
+                                        adCost: "AdWords: Ad Cost"
+                                        CPM: "AdWords: CPM"
+                                        CPC: "AdWords: CPC"
+                                        CTR: "AdWords: CTR"
+                                        costPerTransaction: "AdWords: Cost per Transaction"
+                                        costPerGoalConversion: "AdWords: Cost per Goal Conversion"
+                                        costPerConversion: "AdWords: Cost per Conversion"
+                                        RPC: "AdWords: RPC"
+                                        ROAS: "AdWords: ROAS"
+                                        #page tracking
+                                        pageValue: "Page Tracking: Page Value"
+                                        entrances: "Page Tracking: Entrances"
+                                        entranceRate: "Page Tracking: Entrance Rate"
+                                        pageviews: "Page Tracking: Page Views"
+                                        pageviewsPerSession: "Page Tracking: Page Views per Session"
+                                        uniquePageviews: "Page Tracking: Unique Page Views"
+                                        timeOnPage: "Page Tracking: Time on Page"
+                                        avgTimeOnPage: "Page Tracking: Avg. Time on Page"
+                                        exits: "Page Tracking: Exits"
+                                        exitRate: "Page Tracking: Exit Rage"
+                                        #internal search
+                                        searchResultViews: "Internal Search: Search Result Views"
+                                        searchUniques: "Internal Search: Search Uniques"
+                                        avgSearchResultViews: "Internal Search: Avg. Search Result Views"
+                                        searchSessions: "Internal Search: Search Sessions"
+                                        percentSessionsWithSearch: "Internal Search: % Sessions With Search"
+                                        searchDepth: "Internal Search: Search Depth"
+                                        avgSearchDepth: "Internal Search: Avg. Search Depth"
+                                        searchRefinements: "Internal Search: Search Refinements"
+                                        percentSearchRefinements: "Internal Search: % Search Refinements"
+                                        searchDuration: "Internal Search: Search Duration"
+                                        avgSearchDuration: "Internal Search: Avg. Search Duration"
+                                        searchExits: "Internal Search: Search Exits"
+                                        searchExitRate: "Internal Search: Exit Rate"
+                                        searchGoalConversionRateAll: "Internal Search: Search Goal Conversions (All)"
+                                        goalValueAllPerSearch: "Internal Search: Goal Value All per Search"
+                                        #site speed
+                                        pageLoadTime: "Site Speed: Page Load Time"
+                                        pageLoadSample: "Site Speed: Page Load Sample"
+                                        avgPageLoadTime: "Site Speed: Avg. Page Load Time"
+                                        domainLookupTime: "Site Speed: Domain Lookup Time"
+                                        avgDomainLookupTime: "Site Speed: Avg. Domain Lookup Time"
+                                        pageDownloadTime: "Site Speed: Page Download Time"
+                                        avgPageDownloadTime: "Site Speed: Avg. Page Download Time"
+                                        redirectionTime: "Site Speed: Redirection Time"
+                                        avgRedirectionTime: "Site Speed: Avg. Redirection Time"
+                                        serverConnectionTime: "Site Speed: Server Connection Time"
+                                        avgServerConnectionTime: "Site Speed: Avg. Server Connection Time"
+                                        serverResponseTime: "Site Speed: Server Response Time"
+                                        avgServerResponseTime: "Site Speed: Avg. Server Response Time"
+                                        speedMetricsSample: "Site Speed: Speed Metric Sample"
+                                        domInteractiveTime: "Site Speed: DOM Interactive Time"
+                                        avgDomInteractiveTime: "Site Speed: Avg. DOM Interactive Time"
+                                        domContentLoadedTime: "Site Speed: DOM Content Loaded Time"
+                                        avgDomContentLoadedTime: "Site Speed: Avg. DOM Content Loaded Time"
+                                        domLatencyMetricsSample: "Site Speed: DOM Latency Metrics Sample"
+                                        #event tracking
+                                        totalEvents: "Event Tracking: Total Events"
+                                        uniqueEvents: "Event Tracking: Unique Events"
+                                        eventValue: "Event Tracking: Event Value"
+                                        avgEventValue: "Event Tracking: Avg. Event Value"
+                                        sessionsWithEvent: "Event Tracking: Sessions With Event"
+                                        eventsPerSessionWithEvent: "Event Tracking: Events per Session With Event"
+                                        #e-commerce
+                                        transactions: "E-Commerce: Transactions"
+                                        transactionsPerSession: "E-Commerce: Transactions per Session"
+                                        transactionRevenue: "E-Commerce: Transaction Revenue"
+                                        revenuePerTransaction: "E-Commerce: Revenue per Transaction"
+                                        transactionRevenuePerSession: "E-Commerce: Transaction Revenue per Session"
+                                        transactionShipping: "E-Commerce: Transaction Shipping"
+                                        transactionTax: "E-Commerce: Transaction Tax"
+                                        totalValue: "E-Commerce: Total Value"
+                                        itemQuantity: "E-Commerce: Item Quantity"
+                                        uniquePurchases: "E-Commerce: Unique Purchases"
+                                        revenuePerItem: "E-Commerce: Revenue per Item"
+                                        itemRevenue: "E-Commerce: Item Revenue"
+                                        itemsPerPurchase: "E-Commerce: Items per Purchase"
+                                        localTransactionRevenue: "E-Commerce: Local Transaction Revenue"
+                                        localTransactionShipping: "E-Commerce: Local Transaction Shipping"
+                                        localTransactionTax: "E-Commerce: Local Transaction Tax"
+                                        localItemRevenue: "E-Commerce: Local Item Revenue"
+                                        buyToDetailRate: "E-Commerce: Buy-to-Detail Rate"
+                                        cartToDetailRate: "E-Commerce: Cart-to-Detail Rate"
+                                        internalPromotionCTR: "E-Commerce: Internal Promotion CTR"
+                                        internalPromotionClicks: "E-Commerce: Internal Promotion Clicks"
+                                        internalPromotionViews: "E-Commerce: Internal Promotion Views"
+                                        localProductRefundAmount: "E-Commerce: Local Product Refund Amount"
+                                        localRefundAmount: "E-Commerce: Local Refund Amount"
+                                        productAddsToCart: "E-Commerce: Product Adds to Cart"
+                                        productCheckouts: "E-Commerce: Product Checkouts"
+                                        productDetailViews: "E-Commerce: Product Detail Views"
+                                        productListCTR: "E-Commerce: Product List CTR"
+                                        productListClicks: "E-Commerce: Product List Clicks"
+                                        productListViews: "E-Commerce: Product List Views"
+                                        productRefundAmount: "E-Commerce: Product Refund Amount"
+                                        productRefunds: "E-Commerce: Product Refunds"
+                                        productRemovesFromCart: "E-Commerce: Product Removes From Cart"
+                                        productRevenuePerPurchase: "E-Commerce: Product Revenue per Purchase"
+                                        quantityAddedToCart: "E-Commerce: Quantity Added to Cart"
+                                        quantityCheckedOut: "E-Commerce: Quantity Checked Out"
+                                        quantityRefunded: "E-Commerce: Quantity Refunded"
+                                        quantityRemovedFromCart: "E-Commerce: Quantity Removed From Cart"
+                                        refundAmount: "E-Commerce: Refund Amount"
+                                        revenuePerUser: "E-Commerce: Revenue per User"
+                                        totalRefunds: "E-Commerce: Total Refunds"
+                                        transactionsPerUser: "E-Commerce: Transactions per User"
+                                        #social interactions
+                                        socialInteractions: "Social Interactions: Count"
+                                        uniqueSocialInteractions: "Social Interactions: Unique Count"
+                                        socialInteractionsPerSession: "Social Interactions: Count per Session"
+                                        #user timings
+                                        userTimingValue: "User Timings: Value"
+                                        userTimingSample: "User Timings: Sample"
+                                        avgUserTimingValue: "User Timings: Avg. Value"
+                                        #exceptions
+                                        exceptions: "Exceptions: Count"
+                                        exceptionsPerScreenview: "Exceptions: Count per Screen-view"
+                                        fatalExceptions: "Exceptions: Fatal Count"
+                                        fatalExceptionsPerScreenview: "Exceptions: Fatal Count per Screen-view"
+                                        #lifetime value and cohorts
+                                        cohortActiveUsers: "Lifetime Value & Cohorts: Active Users"
+                                        cohortAppviewsPerUser: "Lifetime Value & Cohorts: App-views per User"
+                                        cohortAppviewsPerUserWithLifetimeCriteria: "Lifetime Value & Cohorts: App-views per User With Lifetime Criteria"
+                                        cohortGoalCompletionsPerUser: "Lifetime Value & Cohorts: Goal Completion per User"
+                                        cohortGoalCompletionsPerUserWithLifetimeCriteria: "Lifetime Value & Cohorts: Goal Completion per User With Lifetime Criteria"
+                                        cohortPageviewsPerUser: "Lifetime Value & Cohorts: Page-views per User"
+                                        cohortPageviewsPerUserWithLifetimeCriteria: "Lifetime Value & Cohorts: Page-views per User With Lifetime Criteria"
+                                        cohortRetentionRate: "Lifetime Value & Cohorts: Retention Rate"
+                                        cohortRevenuePerUser: "Lifetime Value & Cohorts: Revenue per User"
+                                        cohortRevenuePerUserWithLifetimeCriteria: "Lifetime Value & Cohorts: Revenue per User With Lifetime Criteria"
+                                        cohortSessionDurationPerUser: "Lifetime Value & Cohorts: Session Duration per User"
+                                        cohortSessionDurationPerUserWithLifetimeCriteria: "Lifetime Value & Cohorts: Session Duration per User With Lifetime Criteria"
+                                        cohortSessionsPerUser: "Lifetime Value & Cohorts: Sessions per User"
+                                        cohortSessionsPerUserWithLifetimeCriteria: "Lifetime Value & Cohorts: Sessions per User With Lifetime Criteria"
+                                        cohortTotalUsers: "Lifetime Value & Cohorts: Total Users"
+                                        cohortTotalUsersWithLifetimeCriteria: "Lifetime Value & Cohorts: Total Users With Lifetime Criteria"
+                                .dimensions:
+                                    type: select
+                                    label: Dimension(s)
+                                    multiple: true
+                                    help: See the Metrics & Dimensions link in the instructions above for more detailed information.
+                                    options:
+                                        #user
+                                        userType: "User: User Type"
+                                        sessionCount: "User: Session Count"
+                                        daysSinceLastSession: "User: Days Since Last Session"
+                                        userDefinedValue: "User: User Defined Value"
+                                        userBucket: "User: User Bucket"
+                                        #session
+                                        sessionDurationBucket: "Session: Session Duration Bucket"
+                                        #traffic sources
+                                        referralPath: "Traffic Sources: Referral Path"
+                                        fullReferrer: "Traffic Sources: Full Referrer"
+                                        campaign: "Traffic Sources: Campaign"
+                                        source: "Traffic Sources: Source"
+                                        medium: "Traffic Sources: Medium"
+                                        sourceMedium: "Traffic Sources: Source Medium"
+                                        keyword: "Traffic Sources: Keyword"
+                                        adContent: "Traffic Sources: Ad Content"
+                                        socialNetwork: "Traffic Sources: Social Network"
+                                        hasSocialSourceReferral: "Traffic Sources: Has Social Source Referral"
+                                        campaignCode: "Traffic Sources: Campaign Code"
+                                        #adwords
+                                        adGroup: "AdWords: Ad Group"
+                                        adSlot: "AdWords: Ad Slot"
+                                        adDistributionNetwork: "AdWords: Ad Distribution Network"
+                                        adMatchType: "AdWords: Ad Match Type"
+                                        adKeywordMatchType: "AdWords: Ad Keyword Match Type"
+                                        adMatchedQuery: "AdWords: Ad Matched Query"
+                                        adPlacementDomain: "AdWords: Ad Placement Domain"
+                                        adPlacementUrl: "AdWords: Ad Placement URL"
+                                        adFormat: "AdWords: Ad Format"
+                                        adTargetingType: "AdWords: Ad Targeting Type"
+                                        adTargetingOption: "AdWords: Ad Targeting Option"
+                                        adDisplayUrl: "AdWords: Ad Display URL"
+                                        adDestinationUrl: "AdWords: Ad Destination URL"
+                                        adwordsCustomerID: "AdWords: Adwords Customer ID"
+                                        adwordsCampaignID: "AdWords: Adwords Campaign ID"
+                                        adwordsAdGroupID: "AdWords: Adwords Ad Group ID"
+                                        adwordsCreativeID: "AdWords: Adwords Creative ID"
+                                        adwordsCriteriaID: "AdWords: Adwords Criteria ID"
+                                        adQueryWordCount: "AdWords: Ad Query Word Count"
+                                        isTrueViewVideoAd: "AdWords: Is TrueView Video Ad"
+                                        #page tracking
+                                        hostname: "Page Tracking: Hostname"
+                                        pagePath: "Page Tracking: Page Path"
+                                        pagePathLevel1: "Page Tracking: Page Path Level 1"
+                                        pagePathLevel2: "Page Tracking: Page Path Level 2"
+                                        pagePathLevel3: "Page Tracking: Page Path Level 3"
+                                        pagePathLevel4: "Page Tracking: Page Path Level 4"
+                                        pageTitle: "Page Tracking: Page Title"
+                                        landingPagePath: "Page Tracking: Landing Page Path"
+                                        secondPagePath: "Page Tracking: Second Page Path"
+                                        exitPagePath: "Page Tracking: Exit Page Path"
+                                        previousPagePath: "Page Tracking: Previous Page Path"
+                                        pageDepth: "Page Tracking: Page Depth"
+                                        #internal search
+                                        searchUsed: "Internal Search: Search Used"
+                                        searchKeyword: "Internal Search: Search Keyword"
+                                        searchKeywordRefinement: "Internal Search: Search Keyword Refinement"
+                                        searchCategory: "Internal Search: Search Category"
+                                        searchStartPage: "Internal Search: Search Start Page"
+                                        searchDestinationPage: "Internal Search: Search Destination Page"
+                                        searchAfterDestinationPage: "Internal Search: Search After Destination Page"
+                                        #event tracking
+                                        eventCategory: "Event Tracking: Event Category"
+                                        eventAction: "Event Tracking: Event Action"
+                                        eventLabel: "Event Tracking: Event Label"
+                                        #e-commerce
+                                        transactionId: "E-Commerce: Transaction ID"
+                                        affiliation: "E-Commerce: Affiliation"
+                                        sessionsToTransaction: "E-Commerce: Sessions to Transaction"
+                                        daysToTransaction: "E-Commerce: Days to Transaction"
+                                        productSku: "E-Commerce: Product SKU"
+                                        productName: "E-Commerce: Product Name"
+                                        productCategory: "E-Commerce: Product Category"
+                                        currencyCode: "E-Commerce: Currency Code"
+                                        checkoutOptions: "E-Commerce: Checkout Options"
+                                        internalPromotionCreative: "E-Commerce: Internal Promotion Creative"
+                                        internalPromotionId: "E-Commerce: Internal Promotion ID"
+                                        internalPromotionName: "E-Commerce: Internal Promotion Name"
+                                        internalPromotionPosition: "E-Commerce: Internal Promotion Position"
+                                        orderCouponCode: "E-Commerce: Order Coupon Code"
+                                        productBrand: "E-Commerce: Product Brand"
+                                        productCategoryHierarchy: "E-Commerce: Product Category Hierarchy"
+                                        productCouponCode: "E-Commerce: Product Coupon Code"
+                                        productListName: "E-Commerce: Product List Name"
+                                        productListPosition: "E-Commerce: Product List Position"
+                                        productVariant: "E-Commerce: Product Variant"
+                                        shoppingStage: "E-Commerce: Shopping Stage"
+                                        #social interactions
+                                        socialInteractionNetwork: "Social Interactions: Network"
+                                        socialInteractionAction: "Social Interactions: Action"
+                                        socialInteractionNetworkAction: "Social Interactions: Network Action"
+                                        socialInteractionTarget: "Social Interactions: Target"
+                                        socialEngagementType: "Social Interactions: Engagement Type"
+                                        #user timings
+                                        userTimingCategory: "User Timing: Category"
+                                        userTimingLabel: "User Timing: Label"
+                                        userTimingVariable: "User Timing: Variable"
+                                        #exceptions
+                                        exceptionDescription: "Exceptions: Description"
+                                        #time
+                                        date: "Time: Date"
+                                        year: "Time: Year"
+                                        month: "Time: Month"
+                                        week: "Time: Week"
+                                        day: "Time: Day"
+                                        hour: "Time: Hour"
+                                        minute: "Time: Minute"
+                                        nthMonth: "Time: nth Month"
+                                        nthWeek: "Time: nth Week"
+                                        nthDay: "Time: nth Day"
+                                        nthMinute: "Time: nth Minute"
+                                        dayOfWeek: "Time: Day of Week"
+                                        dayOfWeekName: "Time: Day of Week Name"
+                                        dateHour: "Time: Date Hour"
+                                        yearMonth: "Time: Year Month"
+                                        yearWeek: "Time: Year Week"
+                                        isoWeek: "Time: ISO Week"
+                                        isoYear: "Time: ISO Year"
+                                        isoYearIsoWeek: "Time: ISO Year ISO Week"
+                                        nthHour: "Time: nth Hour"
+                                        #audience
+                                        userAgeBracket: "Audience: Age Bracket"
+                                        userGender: "Audience: Gender"
+                                        interestOtherCategory: "Audience: Other Category"
+                                        interestAffinityCategory: "Audience: Affinity Category"
+                                        interestInMarketCategory: "Audience: In-Market Category"
+                                        #lifetime value and cohorts
+                                        acquisitionCampaign:: "Lifetime Value & Cohorts: Aquisition Campaign"
+                                        acquisitionMedium: "Lifetime Value & Cohorts: Aquisition Medium"
+                                        acquisitionSource: "Lifetime Value & Cohorts: Aquisition Source"
+                                        acquisitionSourceMedium: "Lifetime Value & Cohorts: Aquisition Source Medium"
+                                        acquisitionTrafficChannel: "Lifetime Value & Cohorts: Aquisition Traffic Channel"
+                                        cohort: "Lifetime Value & Cohorts: Cohort"
+                                        cohortNthDay: "Lifetime Value & Cohorts: Cohort nth Day"
+                                        cohortNthMonth: "Lifetime Value & Cohorts: Cohort nth Month"
+                                        cohortNthWeek: "Lifetime Value & Cohorts: Cohort nth Week"

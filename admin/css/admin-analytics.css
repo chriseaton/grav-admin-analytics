@@ -1,6 +1,13 @@
 
 #plugin-admin-analytics #view-selector {
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
+    text-align: center;
+    background-color: #476472;
+}
+
+#plugin-admin-analytics #view-selector table td {
+    vertical-align: middle;
+    line-height: 30px;
 }
 
 #plugin-admin-analytics .default-box-shadow .admin-block {
