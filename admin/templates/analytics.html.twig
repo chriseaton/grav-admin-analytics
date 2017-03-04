@@ -11,7 +11,11 @@
 {% block javascripts %}
     {% do assets.addJs('plugin://admin-analytics/admin/js/admin-analytics.js') %}
     {% do assets.addInlineJs( "admin.plugin.analytics.init({
-            ga: { auth_token: '#{grav.twig.GAAuthToken}' }
+            ga: {
+                auth_token: '#{grav.twig.GAAuthToken}',
+                view_switcher: #{ config.plugins['admin-analytics'].ga.view_switcher|json_encode },
+                charts: #{ config.plugins['admin-analytics'].ga.charts|json_encode }
+            }
         });" ) %}
     {{ parent() }}
 {% endblock %}
@@ -27,7 +31,7 @@
     <div id="plugin-admin-analytics">
         <div class="dashboard">
             <div id="view-selector"></div>
-            <div class="default-box-shadow">
+            <div class="default-box-shadow analytics-panel">
                 <div class="admin-block">
                    <div id="chart-primary"></div>
                 </div>

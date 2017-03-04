@@ -10,7 +10,9 @@
     line-height: 30px;
 }
 
-#plugin-admin-analytics .default-box-shadow .admin-block {
-    padding-left: 2rem;
-    padding-right: 2rem;
+#plugin-admin-analytics .analytics-panel .admin-block {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }

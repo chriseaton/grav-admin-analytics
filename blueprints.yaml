@@ -97,7 +97,6 @@ form:
                                 .title:
                                     type: text
                                     label: Title
-                                    placeholder: My Site Analytics Chart
                                 .display:
                                     type: select
                                     label: Display
@@ -121,7 +120,12 @@ form:
                                     label: Metric(s)
                                     help: See the Metrics & Dimensions link in the instructions above for more detailed information.
                                     multiple: true
+                                    default: sessions
+                                    validate:
+                                        required: true
+                                        type: array
                                     options:
+                                        none: ""
                                         #user
                                         users: "User: Users"
                                         newUsers: "User: New Users"
@@ -283,9 +287,13 @@ form:
                                 .dimensions:
                                     type: select
                                     label: Dimension(s)
-                                    multiple: true
                                     help: See the Metrics & Dimensions link in the instructions above for more detailed information.
+                                    multiple: true
+                                    validate:
+                                        type: array
+                                    default: date
                                     options:
+                                        none: ""
                                         #user
                                         userType: "User: User Type"
                                         sessionCount: "User: Session Count"
