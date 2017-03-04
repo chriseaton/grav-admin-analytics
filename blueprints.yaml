@@ -4,11 +4,10 @@ description: Adds an analytics section to Grav's admin plugin.
 icon: bar-chart
 author:
     name: Christopher Eaton
-    email: chriseaton@live.com
-    url: https://gitlab.com/chriseaton
-homepage: https://gitlab.com/chriseaton/grav-plugin-admin-analytics
-keywords: admin, plugin, analytics, manager
-bugs: https://gitlab.com/chriseaton/grav-plugin-admin-analytics/issues
+    url: https://github.com/chriseaton
+homepage: https://github.com/chriseaton/grav-plugin-admin-analytics
+keywords: admin, plugin, google analytics, analytics, dashboard
+bugs: https://github.com/chriseaton/grav-plugin-admin-analytics/issues
 
 dependencies:
     - admin
