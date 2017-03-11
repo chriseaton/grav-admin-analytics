@@ -57,6 +57,7 @@ admin.plugin.analytics = {
                    '</div>';
         return {
             id: id,
+            title: title,
             html: html
         };
     },
@@ -254,7 +255,7 @@ admin.plugin.analytics = {
                             container: panel.id,
                             type: pcc.type.toUpperCase(),
                             options: {
-                                title: pcc.title,
+                                title: pcc.panel_title,
                                 backgroundColor:{
                                     'fill': '#FFFFFF',
                                     'fillOpacity': 0
